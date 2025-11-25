@@ -1,1 +1,45 @@
+create database SalesDB;
+use SalesDB;
 
+create table customer (
+ customerID int primary key not null auto_increment,
+ customerName varchar(100) not null,
+ phone varchar(15),
+ createDate datetime not null
+);
+
+create table products (
+ productID int primary key not null auto_increment,
+ productName varchar( 100 ) not null,
+ category varchar (100),
+ price decimal (10,2)
+);
+
+create table orders (
+ orderID int primary key not null auto_increment,
+ customerID int not null,
+ totalAmount decimal (10,2),
+ foreign key (customerID) references customer ( customerID )
+);
+
+create table orderdetails ( 
+ orderDetailID int auto_increment primary key not null,
+ orderID int not null,
+ productID int not null,
+ quantity int not null,
+ unitPrice decimal (10,2),
+ foreign key (orderID) references orders (orderID),
+ foreign key (productID) references products (productID)
+);
+
+alter table customer
+add email varchar (100);
+
+alter table orders
+add orderDate datetime;
+
+alter table customer
+add index idx_customer_email ( email);
+
+alter table orders 
+add index idx_orders_orderDate (orderDate);
