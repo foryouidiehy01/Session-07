@@ -1,0 +1,33 @@
+create database SalesDB;
+use SalesDB;
+
+create table products (
+	productID int not null primary key,
+    productName varchar(100),
+    price decimal (10,2)
+);
+create table customers (
+	customerID int not null primary key,
+    firstName varchar(50),
+    lastName varchar(50),
+    email varchar(100)
+);
+create table orders (
+	orderID int not null primary key,
+    orderDate datetime,
+    totalAmount decimal(10,2),
+    customerID int not null,
+    foreign key (customerID) references customers (customerID)
+);
+create table orderItem (
+	orderItemId int not null primary key,
+    orderId int,
+    productId int,
+    quantity int,
+    price decimal (10,2),
+    foreign key (orderId) references orders (orderId),
+    foreign key (productId) references products (productId)
+);
+
+create index idx_orderID 
+on orderItem (orderID);
