@@ -1,0 +1,56 @@
+create database SalesDB;
+use SalesDB;
+
+create table customer (
+ customerID int primary key not null auto_increment,
+ customerName varchar(100) not null,
+ phone varchar(15),
+ createDate datetime not null
+);
+
+create table products (
+ productID int primary key not null auto_increment,
+ productName varchar( 100 ) not null,
+ category varchar (100),
+ price decimal (10,2)
+);
+
+create table orders (
+ orderID int primary key not null auto_increment,
+ customerID int not null,
+ totalAmount decimal (10,2),
+ foreign key (customerID) references customer ( customerID )
+);
+
+create table orderdetails ( 
+ orderDetailID int auto_increment primary key not null,
+ orderID int not null,
+ productID int not null,
+ quantity int not null,
+ unitPrice decimal (10,2),
+ foreign key (orderID) references orders (orderID),
+ foreign key (productID) references products (productID)
+);
+
+create view customer_orders as 
+select 
+  o.orderID,
+  c.customerName,
+  o.orderDate,
+  o.totalAmount
+from orders o
+join customer c on o.customerID = c.customerID;
+
+insert into customer (customerName, phone, createDate)
+values ('Nguyen Van A', '0123456789', NOW());
+
+insert into  orders 
+values 
+(1,1,1000,'2025-01-01'),
+(2,1,2000,'2025-01-02');
+
+update orders 
+set totalAmount = 250.00
+where orderID = 1;
+
+select * from orders;
